@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaféGram - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #faf7f2;
+            --card-bg: #ffffff;
+            --text-main: #2c1e14;
+            --text-secondary: #8c7365;
+            --border-color: #e6dfd5;
+            --primary-brown: #4a3321;
+            --accent-coffee: #b07d62;
+            --button-bg: #6f4e37;
+            --button-hover: #573c2a;
+            --like-red: #ff3b30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- TELA DE LOGIN --- */
+        #login-screen {
+            width: 100%;
+            max-width: 380px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 30px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(74, 51, 33, 0.05);
+        }
+
+        .login-logo {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 38px;
+            font-weight: bold;
+            color: var(--primary-brown);
+            margin-bottom: 30px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            background: #faf6f0;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-card input:focus {
+            border-color: var(--accent-coffee);
+        }
+
+        .login-card button {
+            width: 100%;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .login-card button:hover {
+            background-color: var(--button-hover);
+        }
+
+        /* --- APLICATIVO PRINCIPAL (FEED) --- */
+        #app-screen {
+            display: none;
+            width: 100%;
+            max-width: 470px;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            max-width: 470px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            z-index: 100;
+        }
+
+        .app-logo {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-brown);
+        }
+
+        .header-icons i {
+            font-size: 20px;
+            margin-left: 16px;
+            cursor: pointer;
+            color: var(--primary-brown);
+        }
+
+        .main-content {
+            margin-top: 65px;
+            padding: 0;
+        }
+
+        /* Criar Post */
+        .create-post-box {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+
+        .create-post-box h3 {
+            font-size: 14px;
+            color: var(--primary-brown);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .create-post-box input {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            background: #faf6f0;
+        }
+
+        .post-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .create-post-box button {
+            flex: 1;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .camera-action-btn {
+            background-color: var(--accent-coffee) !important;
+        }
+
+        #cameraInput {
+            display: none;
+        }
+
+        /* Stories */
+        .stories-container {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .stories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 68px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .story-ring {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #b07d62, #e6dfd5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+        }
+
+        .story img {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 2px solid var(--card-bg);
+            object-fit: cover;
+        }
+
+        .story span {
+            font-size: 11px;
+            margin-top: 4px;
+            color: var(--text-main);
+            width: 68px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Posts */
+        .post {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-user img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-user span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .post-image img {
+            width: 100%;
+            max-height: 480px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 14px;
+            font-size: 20px;
+        }
+
+        .post-actions .left-icons i {
+            margin-right: 14px;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .post-actions i.fa-solid.fa-heart {
+            color: var(--like-red);
+        }
+
+        .post-actions .right-icon i {
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .post-likes {
+            padding: 0 14px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .post-caption {
+            padding: 0 14px;
+            font-size: 13px;
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+
+        .post-caption strong {
+            margin-right: 6px;
+        }
+
+        .comments-section {
+            padding: 0 14px;
+            max-height: 90px;
+            overflow-y: auto;
+            margin-bottom: 6px;
+        }
+
+        .comment {
+            font-size: 12px;
+            margin-bottom: 3px;
+            word-break: break-word;
+        }
+
+        .comment strong {
+            margin-right: 6px;
+        }
+
+        .post-time {
+            padding: 0 14px 8px 14px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .add-comment {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+            padding: 8px 14px;
+            align-items: center;
+        }
+
+        .add-comment input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            background: transparent;
+        }
+
+        .add-comment button {
+            background: none;
+            border: none;
+            color: var(--accent-coffee);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Barra Inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 470px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .bottom-nav i {
+            font-size: 20px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-logo">CaféGram</div>
+            <input type="text" id="usernameInput" placeholder="Nome de usuário">
+            <input type="password" placeholder="Senha">
+            <button onclick="realizarLogin()">Entrar</button>
+        </div>
+    </div>
+
+    <!-- APLICATIVO PRINCIPAL -->
+    <div id="app-screen">
+        <header>
+            <div class="app-logo">CaféGram</div>
+            <div class="header-icons">
+                <i class="fa-regular fa-square-plus" onclick="document.getElementById('imgUrl').focus()"></i>
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-paper-plane" onclick="realizarLogout()" title="Sair"></i>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Criar Post -->
+            <div class="create-post-box">
+                <h3><i class="fa-solid fa-camera"></i> Nova Publicação</h3>
+                <input type="text" id="imgUrl" placeholder="Cole o link da foto (URL)...">
+                <input type="text" id="imgCaption" placeholder="Escreva uma legenda...">
+                
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleCameraCapture(event)">
+                
+                <div class="post-btns">
+                    <button class="camera-action-btn" onclick="document.getElementById('cameraInput').click()">
+                        <i class="fa-solid fa-camera-retro"></i> Tirar Foto
+                    </button>
+                    <button onclick="createNewPost()">
+                        <i class="fa-solid fa-share"></i> Postar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stories -->
+            <div class="stories-container">
+                <div class="story">
+                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Story"></div>
+                    <span id="story-username">perfil</span>
+                </div>
+                <div class="story">
+                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Story"></div>
+                    <span>carlos_caf</span>
+                </div>
+                <div class="story">
+                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="Story"></div>
+                    <span>mari_barista</span>
+                </div>
+                <div class="story">
+                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" alt="Story"></div>
+                    <span>roast_master</span>
+                </div>
+            </div>
+
+            <!-- Feed -->
+            <div id="feed">
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="User">
+                            <span>mari_barista</span>
+                        </div>
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600" alt="Post" ondblclick="toggleLikeDouble(this)">
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="left-icons">
+                            <i class="fa-regular fa-heart" onclick="toggleLike(this)"></i>
+                            <i class="fa-regular fa-comment"></i>
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </div>
+                        <div class="right-icon">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </div>
+                    </div>
+
+                    <div class="post-likes"><span class="like-count">128</span> curtidas</div>
+
+                    <div class="post-caption">
+                        <strong>mari_barista</strong> Um café quentinho para começar bem o dia ☕🤎
+                    </div>
+
+                    <div class="comments-section" id="comment-section-default">
+                        <div class="comment"><strong>carlos_caf</strong> Perfeito demais!</div>
+                    </div>
+
+                    <div class="post-time">Há 2 horas</div>
+
+                    <div class="add-comment">
+                        <input type="text" placeholder="Adicione um comentário..." onkeypress="handleComment(event, 'comment-section-default')">
+                        <button onclick="addCommentButton(this, 'comment-section-default')">Publicar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <i class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-regular fa-square-plus" onclick="document.getElementById('imgUrl').focus()"></i>
+            <i class="fa-solid fa-clapperboard"></i>
+            <i class="fa-regular fa-circle-user" onclick="realizarLogout()" title="Sair"></i>
+        </div>
+    </div>
+
+    <script>
+        let usuarioAtual = "seu_perfil";
+        let postIdCounter = 1;
+
+        function realizarLogin() {
+            const input = document.getElementById('usernameInput').value.trim();
+            if (input !== "") {
+                usuarioAtual = input;
+            }
+            document.getElementById('story-username').textContent = usuarioAtual;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'block';
+        }
+
+        function realizarLogout() {
+            document.getElementById('app-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        function handleCameraCapture(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imgUrl').value = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function createNewPost() {
+            const urlInput = document.getElementById('imgUrl');
+            const captionInput = document.getElementById('imgCaption');
+            
+            const imageUrl = urlInput.value.trim();
+            const captionText = captionInput.value.trim();
+
+            if (imageUrl === "") {
+                alert("Insira ou tire uma foto primeiro!");
+                return;
+            }
+
+            postIdCounter++;
+            const sectionId = `comment-section-${postIdCounter}`;
+            const feed = document.getElementById('feed');
+
+            const newPostHTML = `
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="User">
+                            <span>${escapeHtml(usuarioAtual)}</span>
+                        </div>
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+
+                    <div class="post-image">
+                        <img src="${escapeHtml(imageUrl)}" alt="Post" ondblclick="toggleLikeDouble(this)" onerror="this.src='https://via.placeholder.com/600x400?text=Erro+ao+carregar'">
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="left-icons">
+                            <i class="fa-regular fa-heart" onclick="toggleLike(this)"></i>
+                            <i class="fa-regular fa-comment"></i>
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </div>
+                        <div class="right-icon">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </div>
+                    </div>
+
+                    <div class="post-likes"><span class="like-count">1</span> curtida</div>
+
+                    <div class="post-caption">
+                        <strong>${escapeHtml(usuarioAtual)}</strong> ${escapeHtml(captionText)}
+                    </div>
+
+                    <div class="comments-section" id="${sectionId}"></div>
+
+                    <div class="post-time">Agora mesmo</div>
+
+                    <div class="add-comment">
+                        <input type="text" placeholder="Adicione um comentário..." onkeypress="handleComment(event, '${sectionId}')">
+                        <button onclick="addCommentButton(this, '${sectionId}')">Publicar</button>
+                    </div>
+                </div>
+            `;
+
+            feed.insertAdjacentHTML('afterbegin', newPostHTML);
+            urlInput.value = "";
+            captionInput.value = "";
+            document.getElementById('cameraInput').value = "";
+        }
+
+        function toggleLike(icon) {
+            const post = icon.closest('.post');
+            const likeCountSpan = post.querySelector('.like-count');
+            let currentLikes = parseInt(likeCountSpan.textContent.replace('.', ''));
+
+            if (icon.classList.contains('fa-regular')) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'fa-heart');
+                currentLikes += 1;
+            } else {
+                icon.classList.remove('fa-solid', 'fa-heart');
+                icon.classList.add('fa-regular');
+                currentLikes -= 1;
+            }
+            likeCountSpan.textContent = currentLikes.toLocaleString('pt-BR');
+        }
+
+        function toggleLikeDouble(imgElement) {
+            const post = imgElement.closest('.post');
+            const heartIcon = post.querySelector('.post-actions .left-icons i.fa-heart');
+            if (heartIcon.classList.contains('fa-regular')) {
+                toggleLike(heartIcon);
+            }
+        }
+
+        function handleComment(event, sectionId) {
+            if (event.key === 'Enter') {
+                submitComment(event.target, sectionId);
+            }
+        }
+
+        function addCommentButton(button, sectionId) {
+            submitComment(button.previousElementSibling, sectionId);
+        }
+
+        function submitComment(input, sectionId) {
+            const commentText = input.value.trim();
+            if (commentText === "") return;
+
+            const commentSection = document.getElementById(sectionId);
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `<strong>${escapeHtml(usuarioAtual)}</strong> ${escapeHtml(commentText)}`;
+            
+            commentSection.appendChild(newComment);
+            input.value = "";
+            commentSection.scrollTop = commentSection.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            if (text.startsWith('data:image')) return text;
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
